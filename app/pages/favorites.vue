@@ -456,6 +456,7 @@ const authStore = useAuthStore()
 
 definePageMeta({
   hideHeader: true,
+  alias: ['/profile/favorites']
 })
 
 useHead({ title: 'My Favorites - Gold Store' })
@@ -528,19 +529,22 @@ const menuItems = computed(() => [
 ])
 
 function handleMenuClick(key: string) {
+  if (key === 'favorites') return
   activeKey.value = key
   const routes: Record<string, string> = {
     personal: '/profile',
-    orders: '/profile/orders',
-    addresses: '/profile/addresses',
-    balance: '/profile/wallet',
-    coins: '/profile/coins',
-    support: '/profile/support',
-    invite: '/profile/invite',
-    followed: '/profile/followed-merchants',
+    orders: '/order',
+    addresses: '/Addresses',
+    balance: '/wallet',
+    coins: '/coins',
+    followed: '/followed merchants',
+    Followed: '/followed merchants',
+    followed_merchants: '/followed merchants',
+    support: '/support',
+    invite: '/invite',
     favorites: '/favorites',
   }
-  if (routes[key] && key !== 'favorites') {
+  if (routes[key]) {
     navigateTo(localePath(routes[key]))
   }
 }

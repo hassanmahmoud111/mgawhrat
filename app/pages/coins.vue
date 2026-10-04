@@ -212,7 +212,7 @@
                 <component :is="item.icon" class="w-5 h-5 text-gray-900 shrink-0" />
                 <span class="text-sm sm:text-base">{{ item.label }}</span>
               </div>
-              <ChevronLeftIcon class="w-4 h-4 text-[#A89D8E]" />
+              <ChevronLeftIcon class="w-4 h-4 text-[#A89D8E] rtl:rotate-0 ltr:rotate-180 transition-transform" />
             </button>
           </div>
         </aside>
@@ -433,6 +433,7 @@ const { favoritesCount } = useFavorites()
 
 definePageMeta({
   hideHeader: true,
+  alias: ['/profile/coins']
 })
 
 useHead({ title: 'الكوينز - جولد استور' })
@@ -474,8 +475,9 @@ const IconOrders = { render: () => h('svg', { class: 'w-5 h-5 fill-current', vie
 const IconAddresses = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' })]) }
 const IconWallet = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z' })]) }
 const IconCoins = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.42 0 8 1.34 8 2s-3.58 2-8 2-8-1.34-8-2 3.58-2 8-2zm0 16c-4.42 0-8-1.34-8-2v-2.17c1.79 1.09 4.7 1.67 8 1.67s6.21-.58 8-1.67V18c0 .66-3.58 2-8 2zm0-5c-4.42 0-8-1.34-8-2v-2.17c1.79 1.09 4.7 1.67 8 1.67s6.21-.58 8-1.67V13c0 .66-3.58 2-8 2zm0-5c-4.42 0-8-1.34-8-2V7.83c1.79 1.09 4.7 1.67 8 1.67s6.21-.58 8-1.67V8c0 .66-3.58 2-8 2z' })]) }
+const IconStore = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M20 4H4v2l1.6 4.8V20h4.8v-5.6h3.2V20h4.8v-9.2L20 6V4zM6 8.4L6.7 6h10.6l.7 2.4H6z' })]) }
 const IconSupport = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M12 1a9 9 0 0 0-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2a7 7 0 0 1 14 0v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 0 0-9-9z' })]) }
-const IconGift = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1h-2.22l.53-.71C13.62 4.84 14.26 4 15 4zM9 4c.74 0 1.38.84 1.69 1.29l.53.71H9c-.55 0-1-.45-1-1s.45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76V14h2V8.76L15.38 12 17 10.83 14.92 8H20v6z' })]) }
+const IconGift = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1h-2.22l.53-.71C13.62 4.84 14.26 4 15 4zM9 4c.74 0 1.38.84 1.69 1.29l.53.71H9c-.55 0-1-.45-1-1s.45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76V14h2V8.76L15.38 12 17 10.83 14.92 8H20v6z' })]) }
 const IconHeart = { render: () => h('svg', { class: 'w-5 h-5 fill-current', viewBox: '0 0 24 24' }, [h('path', { d: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' })]) }
 
 // ---- Sidebar Menu (coins active) ----
@@ -485,26 +487,31 @@ const menuItems = computed(() => [
   { key: 'personal', label: locale.value === 'ar' ? 'البيانات الشخصية' : (t('profile_personal_data') || 'Personal Data'), icon: IconUser },
   { key: 'orders', label: locale.value === 'ar' ? 'طلباتي' : (t('profile_orders') || 'My Orders'), icon: IconOrders },
   { key: 'addresses', label: locale.value === 'ar' ? 'عناويني' : (t('profile_addresses') || 'My Addresses'), icon: IconAddresses },
-  { key: 'balance', label: locale.value === 'ar' ? 'رصيدي' : (t('profile_balance') || 'My Wallet'), icon: IconWallet },
+  { key: 'balance', label: locale.value === 'ar' ? 'رصيدي' : (t('profile_balance') || 'My Balance'), icon: IconWallet },
   { key: 'coins', label: locale.value === 'ar' ? 'الكوينز' : (t('profile_coins') || 'Coins'), icon: IconCoins },
+  { key: 'followed', label: locale.value === 'ar' ? 'التجار المتابَعين' : (t('profile_followed_merchants') || 'Followed Merchants'), icon: IconStore },
   { key: 'support', label: locale.value === 'ar' ? 'الدعم الفني' : (t('profile_support') || 'Support'), icon: IconSupport },
   { key: 'invite', label: locale.value === 'ar' ? 'دعوة الأصدقاء' : (t('profile_invite_friends') || 'Invite Friends'), icon: IconGift },
   { key: 'favorites', label: locale.value === 'ar' ? 'مفضلي' : (t('profile_favorites') || 'Favorites'), icon: IconHeart },
 ])
 
 function handleMenuClick(key: string) {
+  if (key === 'coins') return
   activeKey.value = key
   const routes: Record<string, string> = {
     personal: '/profile',
-    orders: '/profile/orders',
-    addresses: '/profile/addresses',
-    balance: '/profile/wallet',
-    coins: '/profile/coins',
-    support: '/profile/support',
-    invite: '/profile/invite',
-    favorites: '/khawatem',
+    orders: '/order',
+    addresses: '/Addresses',
+    balance: '/wallet',
+    coins: '/coins',
+    followed: '/followed merchants',
+    Followed: '/followed merchants',
+    followed_merchants: '/followed merchants',
+    support: '/support',
+    invite: '/invite',
+    favorites: '/favorites',
   }
-  if (routes[key] && key !== 'coins') {
+  if (routes[key]) {
     navigateTo(localePath(routes[key]))
   }
 }

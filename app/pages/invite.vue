@@ -187,7 +187,7 @@
                 <component :is="item.icon" class="w-5 h-5 shrink-0" :class="item.danger ? 'text-red-500' : 'text-gray-900'" />
                 <span class="text-sm sm:text-base">{{ item.label }}</span>
               </div>
-              <ChevronLeftIcon class="w-4 h-4" :class="item.danger ? 'text-red-300' : 'text-[#A89D8E]'" />
+              <ChevronLeftIcon class="w-4 h-4 rtl:rotate-0 ltr:rotate-180 transition-transform" :class="item.danger ? 'text-red-300' : 'text-[#A89D8E]'" />
             </button>
           </div>
         </aside>
@@ -407,6 +407,7 @@ const { favoritesCount } = useFavorites()
 
 definePageMeta({
   hideHeader: true,
+  alias: ['/profile/invite']
 })
 
 useHead({ title: 'دعوة الأصدقاء - جولد استور' })
@@ -462,7 +463,7 @@ const menuItems = computed(() => [
   { key: 'personal', label: locale.value === 'ar' ? 'البيانات الشخصية' : (t('profile_personal_data') || 'Personal Data'), icon: IconUser },
   { key: 'orders', label: locale.value === 'ar' ? 'طلباتي' : (t('profile_orders') || 'My Orders'), icon: IconOrders },
   { key: 'addresses', label: locale.value === 'ar' ? 'عناويني' : (t('profile_addresses') || 'My Addresses'), icon: IconAddresses },
-  { key: 'balance', label: locale.value === 'ar' ? 'رصيدي' : (t('profile_balance') || 'My Wallet'), icon: IconWallet },
+  { key: 'balance', label: locale.value === 'ar' ? 'رصيدي' : (t('profile_balance') || 'My Balance'), icon: IconWallet },
   { key: 'coins', label: locale.value === 'ar' ? 'الكوينز' : (t('profile_coins') || 'Coins'), icon: IconCoins },
   { key: 'support', label: locale.value === 'ar' ? 'الدعم الفني' : (t('profile_support') || 'Support'), icon: IconSupport },
   { key: 'invite', label: locale.value === 'ar' ? 'دعوة الأصدقاء' : (t('profile_invite_friends') || 'Invite Friends'), icon: IconGift },
@@ -478,20 +479,22 @@ function handleMenuClick(key: string) {
     navigateTo(localePath('/'))
     return
   }
+  if (key === 'invite') return
   activeKey.value = key
   const routes: Record<string, string> = {
     personal: '/profile',
-    orders: '/profile/orders',
-    addresses: '/profile/addresses',
-    balance: '/profile/wallet',
-    coins: '/profile/coins',
-    support: '/profile/support',
-    invite: '/profile/invite',
-    favorites: '/khawatem',
-    followed_merchants: '/profile/followed-merchants',
-    bank_cards: '/profile/bank-cards',
+    orders: '/order',
+    addresses: '/Addresses',
+    balance: '/wallet',
+    coins: '/coins',
+    followed: '/followed merchants',
+    Followed: '/followed merchants',
+    followed_merchants: '/followed merchants',
+    support: '/support',
+    invite: '/invite',
+    favorites: '/favorites',
   }
-  if (routes[key] && key !== 'invite') {
+  if (routes[key]) {
     navigateTo(localePath(routes[key]))
   }
 }

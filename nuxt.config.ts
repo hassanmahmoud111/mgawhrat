@@ -61,6 +61,18 @@ export default defineNuxtConfig({
     }
   },
 
+  routeRules: {
+    '/profile/orders': { redirect: '/order' },
+    '/profile/addresses': { redirect: '/Addresses' },
+    '/profile/wallet': { redirect: '/wallet' },
+    '/profile/coins': { redirect: '/coins' },
+    '/profile/support': { redirect: '/support' },
+    '/profile/invite': { redirect: '/invite' },
+    '/profile/followed-merchants': { redirect: '/followed merchants' },
+    '/orders': { redirect: '/order' },
+    '/addresses': { redirect: '/Addresses' },
+  },
+
   i18n: {
     locales: [
       {

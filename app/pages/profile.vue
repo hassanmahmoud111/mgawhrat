@@ -283,7 +283,7 @@
                 <component :is="item.icon" class="w-5 h-5 text-gray-900 shrink-0" />
                 <span class="text-sm sm:text-base">{{ item.label }}</span>
               </div>
-              <ChevronLeftIcon class="w-4 h-4 text-[#A89D8E]" />
+              <ChevronLeftIcon class="w-4 h-4 text-[#A89D8E] rtl:rotate-0 ltr:rotate-180 transition-transform" />
             </button>
           </div>
         </aside>
