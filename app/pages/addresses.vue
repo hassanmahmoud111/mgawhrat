@@ -562,7 +562,7 @@ const { favoritesCount } = useFavorites()
 
 definePageMeta({
   hideHeader: true,
-  alias: ['/addresses', '/Addresses', '/profile/addresses']
+  alias: ['/Addresses', '/profile/addresses']
 })
 
 useHead({ title: 'عناويني - جولد استور' })
@@ -630,7 +630,7 @@ function handleMenuClick(key: string) {
   const routes: Record<string, string> = {
     personal: '/profile',
     orders: '/order',
-    addresses: '/Addresses',
+    addresses: '/addresses',
     balance: '/wallet',
     coins: '/coins',
     followed: '/followed merchants',

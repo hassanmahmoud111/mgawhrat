@@ -625,7 +625,7 @@ const menuItems = computed(() => [
     key: 'addresses',
     label: locale.value === 'ar' ? 'عناويني' : t('profile_addresses'),
     icon: IconAddresses,
-    to: '/Addresses',
+    to: '/addresses',
   },
   {
     key: 'balance',

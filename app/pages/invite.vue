@@ -484,7 +484,7 @@ function handleMenuClick(key: string) {
   const routes: Record<string, string> = {
     personal: '/profile',
     orders: '/order',
-    addresses: '/Addresses',
+    addresses: '/addresses',
     balance: '/wallet',
     coins: '/coins',
     followed: '/followed merchants',

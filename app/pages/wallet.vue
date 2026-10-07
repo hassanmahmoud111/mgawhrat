@@ -64,11 +64,11 @@
 
     <!-- Hero -->
     <section class="bg-[#F3E9DF] relative overflow-hidden px-6 md:px-12 py-14 flex flex-col items-center justify-center text-center">
-      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900">{{ (te('page_wallet_title') && t('page_wallet_title') !== 'page_wallet_title') ? t('page_wallet_title') : (locale === 'ar' ? 'رصيدي' : 'My Balance') }}</h1>
+      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900">{{ t('page_wallet_title') || (locale === 'ar' ? 'رصيدي' : 'My Balance') }}</h1>
       <div class="flex items-center justify-center gap-2 mt-4 text-gray-600">
         <NuxtLink :to="localePath('/')" class="font-bold text-gray-900">{{ t('breadcrumb_home') || (locale === 'ar' ? 'الرئيسية' : 'Home') }}</NuxtLink>
         <ChevronLeftIcon class="w-4 h-4 rtl:rotate-0 ltr:rotate-180" />
-        <span>{{ (te('page_wallet_title') && t('page_wallet_title') !== 'page_wallet_title') ? t('page_wallet_title') : (locale === 'ar' ? 'رصيدي' : 'My Balance') }}</span>
+        <span>{{ t('page_wallet_title') || (locale === 'ar' ? 'رصيدي' : 'My Balance') }}</span>
       </div>
 
       <svg class="absolute top-0 left-0 w-80 h-full opacity-40 hidden md:block pointer-events-none" viewBox="0 0 300 300" fill="none">
@@ -521,7 +521,7 @@ function handleMenuClick(key: string) {
   const routes: Record<string, string> = {
     personal: '/profile',
     orders: '/order',
-    addresses: '/Addresses',
+    addresses: '/addresses',
     balance: '/wallet',
     coins: '/coins',
     followed: '/followed merchants',
@@ -592,4 +592,4 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
   }
 })
-</script>#
+</script>
