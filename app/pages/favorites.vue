@@ -1,31 +1,51 @@
 <template>
   <div class="min-h-screen bg-[#F6EFE8] font-ibm text-gray-800">
 
+    <!-- Loading -->
     <div
       v-if="favoriteLoading"
       class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#F9F6F0]"
     >
       <div class="w-12 h-12 border-4 border-[#F3C650] border-t-transparent rounded-full animate-spin mb-4"></div>
-      <p class="text-gray-700 font-bold text-lg">جاري التحميل...</p>
+      <p class="text-gray-700 font-bold text-lg">{{ locale === 'ar' ? 'جاري التحميل...' : 'Loading...' }}</p>
     </div>
 
+    <!-- Header -->
     <header class="sticky top-0 z-50 bg-[#F4EFEA]/90 backdrop-blur-md flex flex-row-reverse items-center justify-between px-6 md:px-12 py-5 border-b border-stone-200/60 shadow-xs transition-all duration-300">
-  
-      <!-- Logo -->
-      <NuxtLink :to="localePath('/')">
-        <div
-          :class="[
-            'flex items-center justify-center transition-all duration-500',
-            isScrolled ? 'w-10 h-10' : 'w-12 h-12'
-          ]"
+
+      <!-- Icons -->
+      <div class="flex flex-row-reverse items-center gap-3">
+        <button
+          @click="switchLanguage"
+          class="h-9 px-3 rounded-full flex items-center justify-center text-sm font-medium hover:scale-110 transition-all duration-200 shadow-sm bg-white/70 text-gray-800 hover:bg-white"
         >
-          <svg viewBox="0 0 100 100" class="w-full h-full text-[#F3C650]" fill="none" stroke="currentColor">
-            <rect x="25" y="25" width="50" height="50" rx="4" transform="rotate(45 50 50)" stroke-width="4" fill="rgba(243,198,80,.15)" />
-            <rect x="33" y="33" width="34" height="34" rx="2" transform="rotate(45 50 50)" stroke-width="3" />
-            <rect x="41" y="41" width="18" height="18" transform="rotate(45 50 50)" stroke-width="2.5" fill="#F3C650" />
-          </svg>
-        </div>
-      </NuxtLink>
+          {{ locale === 'ar' ? 'En' : 'ar' }}
+        </button>
+        <NuxtLink :to="localePath('/auth/login')" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
+          <UserIcon class="w-4 h-4" />
+        </NuxtLink>
+        <NuxtLink :to="localePath('/cart')" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition relative">
+          <ShoppingBagIcon class="w-4 h-4" />
+          <span
+            v-if="cartCount > 0"
+            class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center"
+          >
+            {{ cartCount }}
+          </span>
+        </NuxtLink>
+        <NuxtLink :to="localePath('/favorites')" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition relative" :title="t('favorites') || 'Favorites'">
+          <HeartIcon class="w-4 h-4 text-rose-500 fill-rose-500" />
+          <span
+            v-if="favoritesCount > 0"
+            class="absolute -top-1 -right-1 bg-rose-500 text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs leading-none"
+          >
+            {{ favoritesCount > 99 ? '99+' : favoritesCount }}
+          </span>
+        </NuxtLink>
+        <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
+          <MagnifyingGlassIcon class="w-4 h-4" />
+        </button>
+      </div>
 
       <!-- Nav -->
       <nav class="hidden md:flex items-center gap-2 text-gray-700 font-medium">
@@ -42,75 +62,48 @@
         </NuxtLink>
       </nav>
 
-      <!-- Icons -->
-      <div class="flex flex-row-reverse items-center gap-3">
-        <NuxtLink :to="localePath('/auth/login')" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
-          <UserIcon class="w-4 h-4" />
-        </NuxtLink>
-        <button class="relative w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
-          <BellIcon class="w-4 h-4" />
-          <span
-            v-if="notificationsCount > 0"
-            class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center"
-          >
-            {{ notificationsCount }}
-          </span>
-        </button>
-        <NuxtLink :to="localePath('/cart')" class="relative w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
-          <ShoppingBagIcon class="w-4 h-4" />
-          <span
-            v-if="cartCount > 0"
-            class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center"
-          >
-            {{ cartCount }}
-          </span>
-        </NuxtLink>
-        <NuxtLink :to="localePath('/favorites')" class="relative w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
-          <HeartIcon class="w-4 h-4 text-rose-500 fill-rose-500" />
-          <span
-            v-if="favoritesCount > 0"
-            class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center"
-          >
-            {{ favoritesCount }}
-          </span>
-        </NuxtLink>
-        <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/70 hover:bg-white transition">
-          <MagnifyingGlassIcon class="w-4 h-4" />
-        </button>
-        <button
-          @click="switchLanguage"
-          class="h-10 w-10 rounded-full flex items-center justify-center text-xs font-extrabold uppercase hover:scale-105 transition-all duration-200 shadow-sm bg-gray-900 text-white hover:bg-gray-800"
+      <!-- Logo -->
+      <NuxtLink :to="localePath('/')">
+        <div
+          :class="[
+            'flex items-center justify-center transition-all duration-500',
+            isScrolled ? 'w-10 h-10' : 'w-12 h-12'
+          ]"
         >
-          {{ locale === 'ar' ? 'EN' : 'AR' }}
-        </button>
-      </div>
+          <svg viewBox="0 0 100 100" class="w-full h-full text-[#F3C650]" fill="none" stroke="currentColor">
+            <rect x="25" y="25" width="50" height="50" rx="4" transform="rotate(45 50 50)" stroke-width="4" fill="rgba(243,198,80,.15)" />
+            <rect x="33" y="33" width="34" height="34" rx="2" transform="rotate(45 50 50)" stroke-width="3" />
+            <rect x="41" y="41" width="18" height="18" transform="rotate(45 50 50)" stroke-width="2.5" fill="#F3C650" />
+          </svg>
+        </div>
+      </NuxtLink>
     </header>
 
     <!-- Hero -->
     <section class="bg-[#F3E9DF] relative overflow-hidden px-6 md:px-12 py-14 flex flex-col items-center justify-center text-center">
-      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900">{{ t('page_favorites_title') || 'My Favorites' }}</h1>
+      <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900">{{ t('page_favorites_title') || (locale === 'ar' ? 'مفضلتي' : 'My Favorites') }}</h1>
       <div class="flex items-center justify-center gap-2 mt-4 text-gray-600">
-        <NuxtLink :to="localePath('/')" class="font-bold text-gray-900">{{ t('breadcrumb_home') || 'Home' }}</NuxtLink>
-        <ChevronDirIcon class="w-4 h-4" />
-        <span class="font-bold text-gray-500">{{ t('page_favorites_title') || 'My Favorites' }}</span>
+        <NuxtLink :to="localePath('/')" class="font-bold text-gray-900">{{ t('breadcrumb_home') || (locale === 'ar' ? 'الرئيسية' : 'Home') }}</NuxtLink>
+        <ChevronLeftIcon class="w-4 h-4 rtl:rotate-0 ltr:rotate-180" />
+        <span>{{ t('page_favorites_title') || (locale === 'ar' ? 'مفضلتي' : 'My Favorites') }}</span>
       </div>
 
-      <svg class="absolute top-0 right-0 w-80 h-full opacity-40 hidden md:block pointer-events-none" viewBox="0 0 300 300" fill="none">
+      <svg class="absolute top-0 left-0 w-80 h-full opacity-40 hidden md:block pointer-events-none" viewBox="0 0 300 300" fill="none">
         <g stroke="#D4A017" stroke-width="1">
-          <path v-for="i in 12" :key="i" :d="`M ${300 - i * 25} 0 L 0 ${i * 25}`" />
+          <path v-for="i in 12" :key="i" :d="`M ${i * 25} 0 L 300 ${i * 25}`" />
         </g>
       </svg>
     </section>
-  
+
     <!-- Floating side icons -->
-    <div class="fixed right-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-3.5 z-40">
+    <div class="fixed left-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-3.5 z-40">
       <NuxtLink :to="localePath('/profile')" class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border border-stone-100">
         <UserIcon class="w-5 h-5 text-gray-900" />
       </NuxtLink>
       <NuxtLink :to="localePath('/cart')" class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border border-stone-100">
         <ShoppingBagIcon class="w-5 h-5 text-gray-900" />
       </NuxtLink>
-      <NuxtLink :to="localePath('/favorites')" class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border border-stone-100">
+      <NuxtLink :to="localePath('/favorites')" class="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border border-stone-100" :title="t('favorites') || 'Favorites'">
         <HeartIcon class="w-5 h-5 text-rose-500 fill-rose-500" />
       </NuxtLink>
     </div>
@@ -126,7 +119,7 @@
     >
       <div
         v-if="toastMessage"
-        class="fixed bottom-6 end-6 z-50 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-amber-400/30"
+        class="fixed bottom-6 start-6 z-50 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-amber-400/30"
       >
         <span class="text-amber-400 text-lg">✓</span>
         <span class="text-sm font-bold">{{ toastMessage }}</span>
@@ -134,33 +127,11 @@
     </Transition>
 
     <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-10 lg:py-16" :dir="dir">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-10 lg:py-16">
       <div class="flex flex-col lg:flex-row items-start gap-8">
 
-        <!-- Sidebar Navigation -->
-        <aside class="w-full lg:w-[270px] shrink-0 order-2 lg:order-1">
-          <div class="space-y-1 font-ibm">
-            <button
-              v-for="item in menuItems"
-              :key="item.key"
-              type="button"
-              @click="handleMenuClick(item.key)"
-              class="w-full flex items-center justify-between px-5 py-3.5 transition-all duration-200 cursor-pointer text-start"
-              :class="item.key === activeKey
-                ? 'bg-[#E5DCD0] text-gray-950 font-extrabold rounded-2xl shadow-xs'
-                : 'text-gray-700 font-semibold hover:bg-[#E5DCD0]/40 rounded-2xl border-b border-[#E8DFD1]/60'"
-            >
-              <div class="flex items-center gap-3">
-                <component :is="item.icon" class="w-5 h-5 text-gray-900 shrink-0" />
-                <span class="text-sm sm:text-base">{{ item.label }}</span>
-              </div>
-              <ChevronDirIcon class="w-4 h-4 text-[#A89D8E]" />
-            </button>
-          </div>
-        </aside>
-
         <!-- Favorites Card -->
-        <div class="flex-1 w-full order-1 lg:order-2 bg-white rounded-[36px] p-6 sm:p-8 md:p-10 shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-stone-100/80">
+        <div class="flex-1 w-full bg-white rounded-[36px] p-6 sm:p-8 md:p-10 shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-stone-100/80">
 
           <!-- Card Header -->
           <div class="flex items-center justify-between mb-6">
@@ -243,6 +214,28 @@
           </div>
 
         </div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-[270px] shrink-0">
+          <div class="space-y-1 font-ibm">
+            <button
+              v-for="item in menuItems"
+              :key="item.key"
+              type="button"
+              @click="handleMenuClick(item.key)"
+              class="w-full flex items-center justify-between px-5 py-3.5 transition-all duration-200 cursor-pointer text-start"
+              :class="item.key === activeKey
+                ? 'bg-[#E5DCD0] text-gray-950 font-extrabold rounded-2xl shadow-xs'
+                : 'text-gray-700 font-semibold hover:bg-[#E5DCD0]/40 rounded-2xl border-b border-[#E8DFD1]/60'"
+            >
+              <div class="flex items-center gap-3">
+                <component :is="item.icon" class="w-5 h-5 text-gray-900 shrink-0" />
+                <span class="text-sm sm:text-base">{{ item.label }}</span>
+              </div>
+              <ChevronLeftIcon class="w-4 h-4 text-[#A89D8E] rtl:rotate-0 ltr:rotate-180 transition-transform" />
+            </button>
+          </div>
+        </aside>
 
       </div>
     </main>
@@ -441,12 +434,8 @@ import {
   ShoppingBagIcon,
   HeartIcon,
   ChevronLeftIcon,
-  ChevronRightIcon,
-  PhoneIcon,
-  EnvelopeIcon,
   MagnifyingGlassIcon,
-  BellIcon,
-} from "@heroicons/vue/24/outline"
+} from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -456,21 +445,21 @@ const authStore = useAuthStore()
 
 definePageMeta({
   hideHeader: true,
-  alias: ['/profile/favorites']
+  alias: ['/profile/favorites'],
 })
 
-useHead({ title: 'My Favorites - Gold Store' })
+useHead({ title: computed(() => (locale.value === 'ar' ? 'مفضلتي - جولد استور' : 'My Favorites - Gold Store')) })
 
-// ---- direction (per-locale) ----
-const dir = computed(() => (locale.value === 'ar' ? 'rtl' : 'ltr'))
-const ChevronDirIcon = computed(() => (locale.value === 'ar' ? ChevronLeftIcon : ChevronRightIcon))
+// ---- loading ----
+const favoriteLoading = ref(false)
 
 // ---- header navigation & scroll ----
 const navLinks = computed(() => [
-  { to: '/products', label: t('jewelry') || 'Products' },
-  { to: '/merchants', label: t('merchants') || 'Merchants' },
-  { to: '/offers', label: t('offers') || 'Offers' },
-  { to: '/compare', label: t('compare') || 'Compare' },
+  { to: '/affiliate', label: t('affiliate') },
+  { to: '/compare', label: t('compare') },
+  { to: '/offers', label: t('offers') },
+  { to: '/merchants', label: t('merchants') },
+  { to: '/products', label: t('jewelry') }
 ])
 
 function isActive(path: string) {
@@ -489,11 +478,11 @@ function switchLanguage() {
   navigateTo(switchLocalePath(newLocale))
 }
 
-// ---- notifications (لسه مفيش composable ليها، فضلت زي ما هي) ----
+// ---- notifications (no composable yet) ----
 const notificationsCount = ref(0)
 
-// ---- cart & favorites composables (المصدر الوحيد للـ state ده) ----
-const { cartCount, addToCart, toastMessage, showToast } = useCart()
+// ---- cart & favorites composables ----
+const { cartCount, addToCart, toastMessage } = useCart()
 const { favorites, favoritesCount, removeFavorite, fetchFavorites } = useFavorites()
 
 // ---- footer contact info ----
@@ -528,24 +517,25 @@ const menuItems = computed(() => [
   { key: 'favorites', label: locale.value === 'ar' ? 'مفضلي' : (t('profile_favorites') || 'Favorites'), icon: IconHeart },
 ])
 
+const menuRoutes: Record<string, string> = {
+  personal: '/profile',
+  orders: '/order',
+  addresses: '/addresses',
+  balance: '/wallet',
+  coins: '/coins',
+  followed: '/followed merchants',
+  Followed: '/followed merchants',
+  followed_merchants: '/followed merchants',
+  support: '/support',
+  invite: '/invite',
+  favorites: '/favorites',
+}
+
 function handleMenuClick(key: string) {
   if (key === 'favorites') return
   activeKey.value = key
-  const routes: Record<string, string> = {
-    personal: '/profile',
-    orders: '/order',
-    addresses: '/addresses',
-    balance: '/wallet',
-    coins: '/coins',
-    followed: '/followed merchants',
-    Followed: '/followed merchants',
-    followed_merchants: '/followed merchants',
-    support: '/support',
-    invite: '/invite',
-    favorites: '/favorites',
-  }
-  if (routes[key]) {
-    navigateTo(localePath(routes[key]))
+  if (menuRoutes[key]) {
+    navigateTo(localePath(menuRoutes[key]))
   }
 }
 
@@ -565,8 +555,8 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
   }
 })
-const favoriteLoading = ref(false)
 </script>
+
 <style>
 .fade-enter-active,
 .fade-leave-active {
